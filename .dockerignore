@@ -1,0 +1,8 @@
+# Exclude local configuration and secrets from images
+configs/config.yaml
+**/id.json
+*.key
+.env
+.DS_Store
+node_modules
+

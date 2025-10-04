@@ -1,0 +1,28 @@
+# Binaries
+/claimer
+/bin/
+/dist/
+*.exe
+*.dll
+*.so
+*.dylib
+*.out
+*.test
+
+# Go build cache
+/cover*.out
+*.coverprofile
+
+# Local configs and secrets
+config/config.yaml
+configs/config.yaml
+.env
+**/id.json
+*.key
+
+# Misc
+.DS_Store
+node_modules/
+.idea/
+.vscode/
+
