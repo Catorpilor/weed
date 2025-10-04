@@ -82,6 +82,37 @@ claim:
   jitter_pct: 0.2
 ```
 
+Note on configs/config.yaml (gitignored)
+- `configs/config.yaml` is intentionally listed in `.gitignore` so you don’t commit secrets.
+- Create it locally before running. You can use the snippet above or generate a minimal file with:
+
+```
+mkdir -p configs
+cat > configs/config.yaml <<'YAML'
+rpc:
+  url: "https://api.mainnet-beta.solana.com"
+  commitment: "confirmed"
+  timeout: "10s"
+wallet:
+  keypair_path: ""         # set to your keypair path, preferred
+  secret_key_b58: ""       # or set via env SECRET_KEY_B58
+claim:
+  reference_signature: "2xS8BchUy4GJffLEPb5mRtfwz7Gyh6YEfX75U45jh8rVuPXxyTfZBeFt6Fo4LB2FmDMmqj6x2ixE52MMdan1TF8J"
+  program_id: "5f6jnqJUNkUvWvwuqvTvmbQS1REjSsgTtZ75KercWNnG"
+  token_program_id: ""      # optional override (Tokenkeg or Token-2022)
+  interval: "15m"
+  jitter_pct: 0.2
+fees:
+  priority_microlamports: 0
+  compute_unit_limit: 0
+confirm: "confirmed"
+max_retries: 3
+logging:
+  level: "info"
+  format: "json"
+YAML
+```
+
 **Security Notes**
 - Prefer `wallet.keypair_path` (file-mounted ed25519 array) over `SECRET_KEY_B58`.
 - Never commit private keys; keep `configs/` world-readable but not secrets.
