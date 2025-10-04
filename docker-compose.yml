@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  claimer:
+    image: ghcr.io/catorpilor/weed:main
+    container_name: weed-claimer
+    restart: unless-stopped
+
+    # The binary defaults to configs/config.yaml relative to the container.
+    # We mount ./configs to /configs and point the CLI at it explicitly.
+    command:
+      - "--config=/configs/config.yaml"
+      # Optional runtime toggles (uncomment as needed):
+      # - "--once"        # run a single claim and exit
+      # - "--simulate"    # simulate only (no send)
+      # - "--interval=15m"  # override interval
+
+    environment:
+      # Optional: override RPC URL from config file
+      # RPC_URL: "https://api.mainnet-beta.solana.com"
+      # Note: Prefer file-based keypair over SECRET_KEY_B58 env for security.
+
+    volumes:
+      # Mount your local configs directory (edit configs/config.yaml as needed).
+      - ./configs:/configs:ro
+      # Recommended: mount a Solana keypair JSON (ed25519 array) for the wallet.
+      # Then set wallet.keypair_path in configs/config.yaml to 
+      #   /secrets/solana-keypair.json
+      # - ./secrets/solana-keypair.json:/secrets/solana-keypair.json:ro
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/claimer", "--help"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
